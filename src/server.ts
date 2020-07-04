@@ -1,6 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {BAD_REQUEST,OK } from 'http-status-codes'
+
 
 (async () => {
 
@@ -28,32 +30,31 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-  app.get( "/filteredimage/",async ( req, res ) => {
+  app.get("/filteredimage/", async (req: express.Request, res: express.Response) => {
     let { image_url } = req.query;
-    if ( !image_url ) {
-      return res.status(400)
-                .send(`img url is required`);
+    if (!image_url) {
+      return res.status(BAD_REQUEST)
+        .send(`img url is required`);
     }
- var file = await filterImageFromURL(image_url);
- res.status(200)
-              .sendFile(file);
-            
-              res.on('close', () => {
-                if (res.statusCode== 200) 
-                {
-                  var files=[]
-              files.push(file);
-              deleteLocalFiles(files);
-                }
-              
-            })    
-  } );
+    var file = await filterImageFromURL(image_url);
+    res.status(OK)
+      .sendFile(file);
+
+    res.on('close', () => {
+      if (res.statusCode == 200) {
+        var files = []
+        files.push(file);
+        deleteLocalFiles(files);
+      }
+
+    })
+  });
 
   //! END @TODO1
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
+  app.get( "/", async (req:express.Request, res:express.Response ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   

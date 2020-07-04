@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "start": "node server.js",
-  "main": "server.js",
+  "main": "./www/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf www/ || true",
@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "http-status-codes": "^1.4.0",
     "jimp": "^0.6.4"
   }
 }
